@@ -1,9 +1,709 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Micro Melody</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Micromelody | Tiny moments, big sound</title>
+    <style>
+      :root {
+        --bg: #f6f7fb;
+        --panel: rgba(255, 255, 255, 0.78);
+        --panel-strong: #ffffff;
+        --text: #141a2d;
+        --muted: #5f6784;
+        --line: rgba(20, 26, 45, 0.08);
+        --primary: #6c63ff;
+        --primary-dark: #4a40d9;
+        --secondary: #ff9ea8;
+        --accent: #7de7d3;
+        --shadow: 0 20px 60px rgba(28, 35, 65, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+        background: radial-gradient(circle at top, #fff7f4 0%, var(--bg) 28%, #eef1ff 100%);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(18px);
+        background: rgba(246, 247, 251, 0.72);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 76px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        font-size: 1.2rem;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        box-shadow: 0 12px 24px rgba(108, 99, 255, 0.28);
+        color: #fff;
+        font-size: 1.1rem;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .nav-cta {
+        background: var(--text);
+        color: #fff;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font-weight: 700;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .nav-cta:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 20px rgba(20, 26, 45, 0.12);
+      }
+
+      .hero {
+        padding: 72px 0 52px;
+      }
+
+      .hero-inner {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        align-items: center;
+        gap: 40px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(108, 99, 255, 0.08);
+        color: var(--primary-dark);
+        font-weight: 700;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 6px rgba(125, 231, 211, 0.2);
+      }
+
+      h1 {
+        margin: 24px 0 18px;
+        font-size: clamp(2.8rem, 4vw, 5rem);
+        line-height: 0.95;
+        letter-spacing: -0.06em;
+      }
+
+      .hero-copy p {
+        max-width: 560px;
+        color: var(--muted);
+        font-size: 1.06rem;
+        margin: 0 0 30px;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 0 24px;
+        border-radius: 14px;
+        font-weight: 700;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .primary-btn {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: #fff;
+        box-shadow: 0 18px 34px rgba(108, 99, 255, 0.28);
+      }
+
+      .secondary-btn {
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(20, 26, 45, 0.08);
+        color: var(--text);
+      }
+
+      .primary-btn:hover,
+      .secondary-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .hero-stats {
+        margin-top: 32px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 28px;
+      }
+
+      .stat {
+        min-width: 110px;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.6rem;
+        letter-spacing: -0.05em;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .visual-card {
+        position: relative;
+        padding: 26px;
+        border: 1px solid rgba(20, 26, 45, 0.06);
+        border-radius: 28px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(244,246,255,0.78));
+        box-shadow: var(--shadow);
+      }
+
+      .mini-window {
+        position: relative;
+        background: linear-gradient(135deg, #1a1e35 0%, #2f3a5c 100%);
+        border-radius: 22px;
+        padding: 18px 18px 14px;
+        overflow: hidden;
+      }
+
+      .window-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      .window-bar span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: block;
+      }
+
+      .window-bar span:nth-child(1) { background: #ff6d7c; }
+      .window-bar span:nth-child(2) { background: #ffcd5a; }
+      .window-bar span:nth-child(3) { background: #63df96; }
+
+      .wave {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 8px;
+        height: 170px;
+        padding-top: 18px;
+      }
+
+      .wave span {
+        width: 18px;
+        border-radius: 999px 999px 0 0;
+        background: linear-gradient(180deg, #8ae4ff, #7d78ff 60%, #ffe3a4 100%);
+        animation: pulse 1.8s ease-in-out infinite;
+      }
+
+      .wave span:nth-child(1) { height: 30%; animation-delay: 0.1s; }
+      .wave span:nth-child(2) { height: 52%; animation-delay: 0.2s; }
+      .wave span:nth-child(3) { height: 82%; animation-delay: 0.3s; }
+      .wave span:nth-child(4) { height: 60%; animation-delay: 0.4s; }
+      .wave span:nth-child(5) { height: 100%; animation-delay: 0.5s; }
+      .wave span:nth-child(6) { height: 72%; animation-delay: 0.6s; }
+      .wave span:nth-child(7) { height: 88%; animation-delay: 0.7s; }
+      .wave span:nth-child(8) { height: 58%; animation-delay: 0.8s; }
+      .wave span:nth-child(9) { height: 40%; animation-delay: 0.9s; }
+
+      @keyframes pulse {
+        0%, 100% { transform: scaleY(0.96); opacity: 0.85; }
+        50% { transform: scaleY(1.08); opacity: 1; }
+      }
+
+      .floating-badge {
+        position: absolute;
+        right: -16px;
+        bottom: 26px;
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid rgba(20, 26, 45, 0.05);
+        box-shadow: 0 16px 32px rgba(20, 26, 45, 0.12);
+        border-radius: 18px;
+        padding: 14px 16px;
+        min-width: 170px;
+      }
+
+      .floating-badge small {
+        display: block;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+
+      .floating-badge strong {
+        display: block;
+        font-size: 1.35rem;
+        letter-spacing: -0.05em;
+      }
+
+      .features {
+        padding: 44px 0 24px;
+      }
+
+      .section-heading {
+        margin: 0 0 26px;
+        text-align: center;
+      }
+
+      .section-heading h2 {
+        margin: 0 0 10px;
+        font-size: clamp(2rem, 3vw, 3rem);
+        letter-spacing: -0.05em;
+      }
+
+      .section-heading p {
+        margin: 0 auto;
+        max-width: 600px;
+        color: var(--muted);
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 28px 22px;
+        box-shadow: 0 8px 26px rgba(20, 26, 45, 0.04);
+      }
+
+      .icon-box {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 18px;
+        font-size: 1.5rem;
+        background: linear-gradient(135deg, rgba(108, 99, 255, 0.12), rgba(125, 231, 211, 0.18));
+      }
+
+      .feature-card h3 {
+        margin: 0 0 10px;
+        font-size: 1.2rem;
+        letter-spacing: -0.04em;
+      }
+
+      .feature-card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .about {
+        padding: 54px 0 60px;
+      }
+
+      .about-panel {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 28px;
+        align-items: center;
+        background: linear-gradient(135deg, rgba(255,255,255,0.84), rgba(244,246,255,0.64));
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: 32px;
+        box-shadow: 0 24px 50px rgba(20, 26, 45, 0.06);
+      }
+
+      .about-image {
+        border-radius: 22px;
+        min-height: 320px;
+        background: linear-gradient(135deg, #1e2245 0%, #4a53a8 30%, #efb6d9 100%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .about-image::before,
+      .about-image::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.14);
+      }
+
+      .about-image::before {
+        width: 260px;
+        height: 260px;
+        top: -50px;
+        right: -30px;
+      }
+
+      .about-image::after {
+        width: 180px;
+        height: 180px;
+        left: -18px;
+        bottom: -40px;
+      }
+
+      .about-bubbles {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .about-bubbles span {
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255,255,255,0.24);
+      }
+
+      .about-bubbles span:nth-child(1) { transform: translate(-80px, -30px); }
+      .about-bubbles span:nth-child(2) { transform: translate(80px, 50px); width: 84px; height: 84px; }
+      .about-bubbles span:nth-child(3) { transform: translate(0, 70px); width: 150px; height: 150px; }
+
+      .about-copy h3 {
+        margin: 0 0 14px;
+        font-size: clamp(1.8rem, 2vw, 2.8rem);
+        letter-spacing: -0.05em;
+      }
+
+      .about-copy p {
+        margin: 0 0 18px;
+        color: var(--muted);
+      }
+
+      .check-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 12px;
+      }
+
+      .check-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+      }
+
+      .check-list li::before {
+        content: "✓";
+        display: inline-grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(125, 231, 211, 0.22);
+        color: #0f865f;
+        font-weight: 800;
+      }
+
+      .site-footer {
+        border-top: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.44);
+      }
+
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        min-height: 86px;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .footer-links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      @media (max-width: 860px) {
+        .nav {
+          flex-wrap: wrap;
+          gap: 16px;
+          padding: 16px 0;
+        }
+
+        .nav-links {
+          order: 3;
+          width: 100%;
+          justify-content: center;
+          gap: 18px;
+          flex-wrap: wrap;
+        }
+
+        .hero-inner,
+        .about-panel,
+        .feature-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          padding-top: 42px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .brand {
+          font-size: 1.08rem;
+        }
+
+        .nav-cta {
+          padding: 10px 14px;
+        }
+
+        .hero-stats {
+          gap: 16px;
+        }
+
+        .cta-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+          width: 100%;
+        }
+
+        .footer-inner {
+          flex-direction: column;
+          justify-content: center;
+          padding: 20px 0;
+          text-align: center;
+        }
+      }
+    </style>
   </head>
   <body>
-    <h1>Welcome to Micro Melody!</h1>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="#top" class="brand" aria-label="Micromelody home">
+          <span class="brand-mark">M</span>
+          <span>Micromelody</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#features">Features</a>
+          <a href="#about">About</a>
+          <a href="#community">Community</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <a href="#get-started" class="nav-cta">Get started</a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <div class="eyebrow">Tiny moments, big sound</div>
+            <h1>Make music that feels personal.</h1>
+            <p>
+              Micromelody helps creators capture ideas, sketch loops, and build expressive
+              soundscapes in minutes — without the clutter of a full studio setup.
+            </p>
+
+            <div class="cta-row" id="get-started">
+              <a href="#features" class="primary-btn">Start creating</a>
+              <a href="#about" class="secondary-btn">Learn more</a>
+            </div>
+
+            <div class="hero-stats" aria-label="Key statistics">
+              <div class="stat">
+                <strong>12k+</strong>
+                <span>Creators</span>
+              </div>
+              <div class="stat">
+                <strong>4.9/5</strong>
+                <span>Average rating</span>
+              </div>
+              <div class="stat">
+                <strong>2 min</strong>
+                <span>To first loop</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="visual-card" aria-label="Micromelody music interface preview">
+            <div class="mini-window">
+              <div class="window-bar">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+
+              <div class="wave" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <div class="floating-badge">
+              <small>Current session</small>
+              <strong>Sunlit Drift</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features" id="features">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Built for playful, focused creation.</h2>
+            <p>
+              A clean workflow for turning inspiration into memorable sound, whether you are
+              sketching a beat or finishing a track.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-card">
+              <div class="icon-box">🎼</div>
+              <h3>Instant melody ideas</h3>
+              <p>Capture ideas as quickly as they come with fast, frictionless composition tools.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="icon-box">⚡</div>
+              <h3>Fast loop building</h3>
+              <p>Stack rhythm, harmony, and texture in a lightweight workspace made for momentum.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="icon-box">🎧</div>
+              <h3>Immersive listening</h3>
+              <p>Preview your mix in real time and dial in the feeling with smooth performance controls.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="about" id="about">
+        <div class="container about-panel">
+          <div class="about-image" aria-hidden="true">
+            <div class="about-bubbles">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+
+          <div class="about-copy">
+            <h3>Made for artists who want clarity.</h3>
+            <p>
+              Micromelody brings together rhythm, melody, and expression in a calm, inspiring toolset.
+              Whether you are drafting a tune on a commute or fine-tuning a production at home, it keeps
+              your creative flow close at hand.
+            </p>
+            <p>
+              Thoughtful controls and a minimal interface help you stay in the zone while bringing richer,
+              more personal sound to every idea.
+            </p>
+
+            <ul class="check-list">
+              <li>Minimal interface, maximum focus</li>
+              <li>Flexible voice and loop controls</li>
+              <li>Designed for quick experimentation</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div class="container footer-inner">
+        <div>© 2026 Micromelody</div>
+        <div class="footer-links" aria-label="Footer links">
+          <a href="#top">Home</a>
+          <a href="#features">Features</a>
+          <a href="#about">About</a>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
